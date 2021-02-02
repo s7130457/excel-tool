@@ -1,0 +1,32 @@
+{
+  "name": "excel-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/@babel/node/bin/babel-node.js src/excel.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s7130457/excel-tool.git"
+  },
+  "keywords": [
+    "excel"
+  ],
+  "author": "jeni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s7130457/excel-tool/issues"
+  },
+  "homepage": "https://github.com/s7130457/excel-tool#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10"
+  },
+  "dependencies": {
+    "xlsx": "^0.16.9"
+  }
+}
