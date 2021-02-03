@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node_modules/@babel/node/bin/babel-node.js src/excel.js"
+    "frontend": "webpack --watch --mode development",
+    "node": "node_modules/@babel/node/bin/babel-node.js ./src/backend/app.js "
   },
   "repository": {
     "type": "git",
@@ -21,12 +22,16 @@
   },
   "homepage": "https://github.com/s7130457/excel-tool#readme",
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/node": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/register": "^7.12.10"
+    "@babel/core": "^7.12.13",
+    "@babel/node": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/register": "^7.12.13",
+    "browserify": "^17.0.0",
+    "webpack": "^5.20.0",
+    "webpack-cli": "^4.5.0"
   },
   "dependencies": {
+    "file-saver": "^2.0.5",
     "iconv-lite": "^0.6.2",
     "xlsx": "^0.16.9"
   }
