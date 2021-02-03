@@ -30,7 +30,7 @@ function getWorkSheetAllData(worksheet) {
     let cellData = {}
     for (let c = range.s.c; c < 5; c++) {
       let cellId = XLSX.utils.encode_cell({c, r}, {c, r}) // 取得欄位編號，ex A5
-      const value = worksheet[cellId]?.v // 取得欄位得值，可能會是undefined  ex AJP-0322
+      const value = worksheet[cellId]?.v // 取得欄位得值，可能會是undefined  ex ABC-0322
       cellData[COL[c]] = value
     }
     sheetData.push(cellData)
@@ -46,7 +46,7 @@ function exportCsvFile(sheetData) {
       const carId = row['車牌號碼']
       // console.log(`carId = `, carId);
       let sub = carId.split('-')
-      // 因為會有9M-7051這種車牌，但對我來說這個是7不是9
+      // 因為會有9A-7788這種車牌，但對我來說這個是7不是9
       return (sub[0].length !== 2 && NUMBER.includes(+sub[0][0])) || (sub[1].length !== 2 && NUMBER.includes(+sub[1][0]))
     } catch (e) {
       // 錯誤的資料不理他
