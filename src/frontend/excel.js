@@ -1,6 +1,7 @@
 import iconv from 'iconv-lite'
 import XLSX from 'xlsx'
 
+
 const Excel = function (opts) {
   this.fpath = opts?.path || `./sample.xlsx`
   this.col = opts?.col || ['項次', '車牌號碼', '姓名', '開張單數', '欠繳費用']
@@ -13,16 +14,24 @@ const Excel = function (opts) {
 }
 
 const _init = function () {
-  const workbook = XLSX.readFile(this.fpath) // excel的所有資料
+  const workbook = XLSX.read(this.fpath, {type: 'binary'}) // excel的所有資料
   const sheetName = workbook.SheetNames[0] // 取得第一張工作表名稱
+  console.log(document.getElementById('span1'));
+  console.log('sheetName = ', sheetName);
+  console.log('workbook');
+  
+  document.getElementById('span1').innerHTML = workbook
   this.worksheet = workbook.Sheets[sheetName] // 第一張工作表的資料
   this.range = XLSX.utils.decode_range(this.worksheet['!ref']) // 整張表有值的範圍 { s: { c: 0, r: 0 }, e: { c: 6, r: 3543 } }
 }
 
-const getWorkSheetAllData = (worksheet) => {
+Excel.prototype.getWorkSheetAllData = function(worksheet) {
+  // console.log('worksheet');
+  // console.log(worksheet);
+  
   let sheetData = []
   const range = this.range
-  for (let r = range.s.r + 4; r < range.e.r/*range.e.r*/; r++) {
+  for (let r = range.s.r + 4; r < 14/*range.e.r*/; r++) {
     let cellData = {}
     for (let c = range.s.c; c < 5; c++) {
       let cellId = XLSX.utils.encode_cell({ c, r }, { c, r }) // 取得欄位編號，ex A5
@@ -30,12 +39,12 @@ const getWorkSheetAllData = (worksheet) => {
       cellData[this.col[c]] = value
     }
     sheetData.push(cellData)
-    // break // 這邊註解拿掉後，就會只取得一筆完整的
+    break // 這邊註解拿掉後，就會只取得一筆完整的
   }
   return sheetData
 }
 
-Excel.prototype.exportCsvFile = (sheetData, outfile = `${this.destDir}/data`) => {
+Excel.prototype.exportCsvFile = function(sheetData, outfile = `${this.destDir}/data`) {
   let result = sheetData.filter(row => {
     try {
       // 資料正確的

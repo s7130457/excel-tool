@@ -1,39 +1,38 @@
 import Excel from "./excel"
 
 
-window.onload = function() {
+window.onload = function () {
   const fileUploader = document.getElementById('file-uploader')
-  fileUploader.addEventListener('change', handleUpload , false)
+  fileUploader.addEventListener('change', handleUpload, false)
 }
 
 const handleUpload = function (e) {
-  
-  let url = getObjectURL(e.target.files[0])
-  console.log(url);
-  
-  // sheet = Excel({ path: url })
-  // let sheet = Excel
-  // // console.log(sheet);
-  // console.log(`sheet.a = `, sheet.a);
-  
-  // let oFReader = new FileReader()
-  // oFReader.readAsDataURL(file)
-  // let filename = document.getElementById("file-uploader").value
+  let sheet
+  const fileReader = new FileReader()
+  const a = fileReader.readAsText(e.target.files[0], 'big5')
+  console.log('a');
+  console.log(a);
+  fileReader.onload= function (e) {
+    console.log('onload');
 
-  let sheet = new Excel({ path: url })
-  console.log('sheet');
-  console.log(sheet);
-  
-}
-
-function getObjectURL(file) {
-  var url = null;
-  if (window.createObjcectURL != undefined) {
-    url = window.createOjcectURL(file);
-  } else if (window.URL != undefined) {
-    url = window.URL.createObjectURL(file);
-  } else if (window.webkitURL != undefined) {
-    url = window.webkitURL.createObjectURL(file);
+    document.getElementById('span1').innerHTML = e.target.result
+    
+    // console.log(e.target.result);
+    
   }
-  return url;
+  
+  // fileReader.readAsDataURL(e.target.files[0])
+  // fileReader.onload = function(e) {
+  //   sheet = new Excel({path: e.target.result})
+  //   // console.log(sheet)
+  //   // let a = fileReader.readAsBinaryString(sheet.worksheet)
+  //   // console.log('a');
+  //   // console.log(a);
+    
+  //   // const data = sheet.getWorkSheetAllData(sheet.worksheet)
+  //   // console.log('data');
+  //   // console.log(data);
+    
+  // }
+  
 }
