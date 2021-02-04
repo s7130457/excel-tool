@@ -1,35 +1,29 @@
-// const Excel = require('./excel')
-
 import Excel from "./excel"
-// const Excel = require('excel')
-// const AAA = new Excel()
+
 
 window.onload = function() {
-  
-  let sheet, file
-  
   const fileUploader = document.getElementById('file-uploader')
-  console.log(fileUploader);
   fileUploader.addEventListener('change', handleUpload , false)
-
-  
-  
-  
-  
 }
-const handleUpload = (e) => {
-  // console.log(e)
-  // console.log(file);
 
-  // file = file[0]
+const handleUpload = function (e) {
+  
   let url = getObjectURL(e.target.files[0])
-  sheet = Excel({ path: url })
-  console.log(sheet);
-
+  console.log(url);
+  
+  // sheet = Excel({ path: url })
+  // let sheet = Excel
+  // // console.log(sheet);
+  // console.log(`sheet.a = `, sheet.a);
+  
   // let oFReader = new FileReader()
   // oFReader.readAsDataURL(file)
   // let filename = document.getElementById("file-uploader").value
-  console.log(url);
+
+  let sheet = new Excel({ path: url })
+  console.log('sheet');
+  console.log(sheet);
+  
 }
 
 function getObjectURL(file) {
