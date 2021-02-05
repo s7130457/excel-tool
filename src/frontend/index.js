@@ -1,14 +1,16 @@
 import Excel from "./excel"
 
+let sheet
 
 window.onload = function () {
-
   const fileUploader = document.getElementById('file-uploader')
   fileUploader.addEventListener('change', handleUpload, false)
+
+  const fileDownloader = document.getElementById('file-downloader')
+  fileDownloader.addEventListener('click', saveTextAsFile, false)
 }
 
 const handleUpload = function (e) {
-  let sheet
   const fileReader = new FileReader()
   fileReader.readAsText
   // 因為直接用ileReader.readAsText(file)讀檔會有例外發生，
@@ -19,5 +21,15 @@ const handleUpload = function (e) {
     const data = this.result
     sheet = new Excel({data})
   }
+}
 
+const saveTextAsFile = function () {
+  let sheetData = sheet.getWorkSheetAllData()
+    sheet.exportCsvFile(sheetData)
+    let  textFileAsBlob = new Blob([sheet.exportData], {type:'text/plain'})
+    let downloadLink = document.createElement('a')
+    downloadLink.innerHTML = 'Download File'
+    console.log(`-----`);
+    downloadLink.href = window.webkitURL.createObjectURL( textFileAsBlob )
+    downloadLink.click();
 }
