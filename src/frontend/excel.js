@@ -3,7 +3,7 @@ import XLSX from 'xlsx'
 
 
 const Excel = function (opts) {
-  this.fpath = opts?.path || `./sample.xlsx`
+  this.data = opts?.data
   this.col = opts?.col || ['項次', '車牌號碼', '姓名', '開張單數', '欠繳費用']
   this.destDir = `./storage`
   this.ext = `.csv`
@@ -14,21 +14,13 @@ const Excel = function (opts) {
 }
 
 const _init = function () {
-  const workbook = XLSX.read(this.fpath, {type: 'binary'}) // excel的所有資料
+  const workbook = XLSX.read(this.data, {type: 'array'}) // excel的所有資料
   const sheetName = workbook.SheetNames[0] // 取得第一張工作表名稱
-  console.log(document.getElementById('span1'));
-  console.log('sheetName = ', sheetName);
-  console.log('workbook');
-  
-  document.getElementById('span1').innerHTML = workbook
   this.worksheet = workbook.Sheets[sheetName] // 第一張工作表的資料
   this.range = XLSX.utils.decode_range(this.worksheet['!ref']) // 整張表有值的範圍 { s: { c: 0, r: 0 }, e: { c: 6, r: 3543 } }
 }
 
 Excel.prototype.getWorkSheetAllData = function(worksheet) {
-  // console.log('worksheet');
-  // console.log(worksheet);
-  
   let sheetData = []
   const range = this.range
   for (let r = range.s.r + 4; r < 14/*range.e.r*/; r++) {
