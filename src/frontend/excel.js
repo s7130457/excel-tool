@@ -1,4 +1,3 @@
-import iconv from 'iconv-lite'
 import XLSX from 'xlsx'
 
 
@@ -26,8 +25,6 @@ Excel.prototype.getWorkSheetAllData = function () {
   const worksheet = this.worksheet
   let sheetData = []
 
-  // 因為中文字會是亂碼，所以先編碼
-
   for (let r = range.s.r + 4; r < range.e.r/*range.e.r*/; r++) {
     let cellData = {}
     for (let c = range.s.c; c < 5; c++) {
@@ -41,7 +38,7 @@ Excel.prototype.getWorkSheetAllData = function () {
   return sheetData
 }
 
-Excel.prototype.exportCsvFile = function (sheetData, outfile = `${this.destDir}/data`) {
+Excel.prototype.filterCarId = function (sheetData) {
   let result = sheetData.filter(row => {
     try {
       // 資料正確的
@@ -57,21 +54,21 @@ Excel.prototype.exportCsvFile = function (sheetData, outfile = `${this.destDir}/
       // return true
     }
   })
-  const fdata = XLSX.utils.json_to_sheet(result)
-  // console.log(XLSX.utils.sheet_to_csv(fdata, 'out.csv'));
-  this.exportData = XLSX.utils.sheet_to_csv(fdata)
-
-
+  // result = XLSX.utils.json_to_sheet(result)
+  // this.exportData = XLSX.utils.sheet_to_csv(fdata)
+  return result
 }
 
-function decode(str) {
-  var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-  var bufView = new Uint16Array(buf);
-  for (var i=0, strLen=str.length; i < strLen; i++) {
-    bufView[i] = str.charCodeAt(i);
-  }
-  let a = String.fromCharCode.apply(null, new Uint16Array(buf))
-  return a
+Excel.prototype.save = function (data) {
+  this.exportData = data
+}
+
+Excel.prototype.exportFile = function () {
+  let result = XLSX.utils.json_to_sheet(this.exportData)
+  const wb = XLSX.utils.book_new()
+  wb.SheetNames.push(`123456`)
+  wb.Sheets[`123456`] = result
+  XLSX.writeFile(wb, 'rest.csv', {bookType:'csv', type: 'array'})
 }
 
 export default Excel

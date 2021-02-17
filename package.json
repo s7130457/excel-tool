@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "frontend": "webpack --watch --mode development",
-    "node": "node_modules/@babel/node/bin/babel-node.js ./src/backend/app.js "
+    "backend": "node_modules/@babel/node/bin/babel-node.js ./src/backend/app.js "
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
   "dependencies": {
     "file-saver": "^2.0.5",
     "iconv-lite": "^0.6.2",
+    "node-fetch": "^2.6.1",
     "xlsx": "^0.16.9"
   }
 }
