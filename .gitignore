@@ -1,6 +1,9 @@
 # output file
 storage
 
+# private file
+/data
+
 # Logs
 logs
 *.log
