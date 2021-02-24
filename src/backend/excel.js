@@ -1,5 +1,6 @@
-import { EventEmitter } from 'events'
-import util from 'util'
+import fetch from 'node-fetch'
+import DataService from '../data.json'
+
 const XLSX = require('xlsx')
 const fs = require('fs')
 const iconv = require('iconv-lite')
@@ -39,7 +40,7 @@ Excel.prototype.getWorkSheetAllData = function (worksheet) {
   return sheetData
 }
 
-Excel.prototype.exportCsvFile = function (sheetData, outfile = `${this.destDir}/data`) {
+Excel.prototype.filterCarId = function (sheetData) {
   let result = sheetData.filter(row => {
     try {
       // 資料正確的
@@ -55,10 +56,27 @@ Excel.prototype.exportCsvFile = function (sheetData, outfile = `${this.destDir}/
       // return true
     }
   })
-  const fdata = XLSX.utils.json_to_sheet(result)
-  fs.writeFileSync(`${outfile}-big5${this.ext}`, iconv.encode(XLSX.utils.sheet_to_csv(fdata), 'Big5'))    // 用big5的編碼ＱＱ
-  fs.writeFileSync(`${outfile}${this.ext}`, iconv.encode(XLSX.utils.sheet_to_csv(fdata), 'utf8'))    // 用utf8的編碼
+  return result
 }
 
-util.inherits(Excel, EventEmitter)
+Excel.prototype.exportCsvFile = function (sheetData, outfile = `${this.destDir}/data`) {
+  const fdata = XLSX.utils.json_to_sheet(sheetData)
+  fs.writeFileSync(`${outfile}-big5${this.ext}`, iconv.encode(XLSX.utils.sheet_to_csv(fdata), 'Big5'))    // 用big5的編碼ＱＱ
+  fs.writeFileSync(`${outfile}${this.ext}`, iconv.encode(XLSX.utils.sheet_to_csv(fdata), 'utf8'))    // 用utf8的編碼
+
+}
+
+Excel.prototype.getTimeIntervalByCarId = async function (sheetData) {
+  console.log(`DataService.url = `, DataService.getTimeIntervalData.url);
+  
+  // sheetData.forEach(row => {
+  //     fetch(DataService.getTimeIntervalData.url, {
+  //       'PLT_NO': row['車牌號碼'],
+
+  //     })
+
+  // })
+
+}
+
 module.exports = Excel

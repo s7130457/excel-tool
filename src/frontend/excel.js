@@ -1,5 +1,6 @@
 import XLSX from 'xlsx'
-
+import Config from '../data.json'
+import { parse } from 'node-html-parser'
 
 const Excel = function (opts) {
   this.data = opts?.data
@@ -63,12 +64,49 @@ Excel.prototype.save = function (data) {
   this.exportData = data
 }
 
+// 連到系統用車牌去搜尋時間
+Excel.prototype.getTimeIntervalByCarId = async function (sheetData) {
+  console.log(`getTimeIntervalByCarId`);
+  console.log(Config.data);
+
+  const fileUrl = './response.txt'
+
+  let content = await fetch(fileUrl)
+  content = await content.text()
+
+  const time = getTimeFromHtml(content)
+  // sheetData.forEach(row => {
+  //   // fetch(`${Config.fetch.url}`, {
+  //   //   'Content-Type': 'application/x-www-form-urlencoded'
+  //   // })
+  // })
+}
+
 Excel.prototype.exportFile = function () {
   let result = XLSX.utils.json_to_sheet(this.exportData)
   const wb = XLSX.utils.book_new()
   wb.SheetNames.push(`123456`)
   wb.Sheets[`123456`] = result
-  XLSX.writeFile(wb, 'rest.csv', {bookType:'csv', type: 'array'})
+  XLSX.writeFile(wb, 'rest.csv', { bookType: 'csv', type: 'array' })
 }
 
+function getTimeFromHtml(content) {
+  let root = parse(content)
+  root = root.removeWhitespace()
+  root = root.querySelectorAll('#QueryResult')[0]
+  root = root.querySelectorAll('#rows')[0]
+  root = root.querySelectorAll('td')
+  let time = []
+  for (let i = 4; i < root.length; i+=24) {
+    let ele = parse(root[i])
+    ele = ele.querySelectorAll('td')[0].textContent
+    time.push(ele)
+  }
+
+  const result = {
+    start: time.shift(),
+    end: time.pop()
+  }
+  return result
+}
 export default Excel

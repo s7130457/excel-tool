@@ -13,7 +13,7 @@ window.onload = function () {
 const handleUpload = function (e) {
   const fileReader = new FileReader()
   fileReader.readAsText
-  // 因為直接用ileReader.readAsText(file)讀檔會有例外發生，
+  // 因為直接用FileReader.readAsText(file)讀檔會有例外發生，
   // 所以要轉成arraybuffer進來
   // 因此excel.js也要改讀arraybuffer
   fileReader.readAsArrayBuffer(e.target.files[0])
@@ -22,6 +22,9 @@ const handleUpload = function (e) {
     sheet = new Excel({ data })
     let sheetData = sheet.getWorkSheetAllData()
     sheetData = sheet.filterCarId(sheetData)
+    sheet.getTimeIntervalByCarId(sheetData)
+    
+
     sheet.save(sheetData)
   }
 }
